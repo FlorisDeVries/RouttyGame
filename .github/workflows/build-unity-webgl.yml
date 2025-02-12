@@ -22,6 +22,12 @@ jobs:
           restore-keys: |
             Library-WebGL-
 
+      - name: Debug Secrets
+        run: |
+          echo "UNITY_LICENSE length: $(echo -n $UNITY_LICENSE | wc -c)"
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+
       - name: Build WebGL
         uses: game-ci/unity-builder@v3
         with:
