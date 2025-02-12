@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
+using GameManagement;
+using GameManagement.Resources;
+using Scores.Resources;
 using UnityEngine;
 
 namespace GameElements
@@ -22,10 +26,28 @@ namespace GameElements
         private SpriteRenderer _spriteRenderer;
         public SpriteRenderer StampSpriteRenderer;
 
+        private Sequence _moveSeq;
+
         private void OnEnable()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
             transform.localScale = Vector3.zero;
+            
+            GameManager.Instance.OnEnterStateEvent += OnEnterState;
+        }
+
+        private void OnEnterState(GameState newState)
+        {
+            if (newState == GameState.GameOver)
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        private void OnDisable()
+        {
+            _moveSeq.Kill();
+            GameManager.Instance.OnEnterStateEvent -= OnEnterState;
         }
 
         public void SetPath(List<ConnectionPoint> path)
@@ -47,7 +69,7 @@ namespace GameElements
             var segmentDurations = new List<float>();
 
             // Build the movement sequence.
-            var moveSeq = DOTween.Sequence();
+            _moveSeq = DOTween.Sequence();
             for (int i = 0; i < _path.Count - 1; i++)
             {
                 var currentCp = _path[i];
@@ -55,13 +77,17 @@ namespace GameElements
                 var segmentDuration = Vector3.Distance(currentCp.Position, nextCp.Position) / moveSpeed;
                 segmentDurations.Add(segmentDuration);
 
-                moveSeq.Append(
+                _moveSeq.Append(
                     transform.DOMove(nextCp.Position, segmentDuration)
                              .SetEase(Ease.Linear)
                 );
-                moveSeq.AppendCallback(() => ApplyNodeEffect(nextCp));
+                _moveSeq.AppendCallback(() => ApplyNodeEffect(nextCp));
             }
-            moveSeq.OnComplete(() => Destroy(gameObject));
+            _moveSeq.OnComplete(() =>
+            {
+                ScoreManager.Instance.AddScore(1);
+                Destroy(gameObject);
+            });
 
             // Build the scaling sequence.
             var scaleSeq = DOTween.Sequence();
@@ -98,7 +124,7 @@ namespace GameElements
             );
 
             // Start both sequences concurrently.
-            moveSeq.Play();
+            _moveSeq.Play();
             scaleSeq.Play();
         }
         

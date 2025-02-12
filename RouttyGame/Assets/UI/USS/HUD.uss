@@ -1,0 +1,30 @@
+/* Root container for the entire HUD */
+.root {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Main HUD container */
+.hud {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end; /* Aligns to the right */
+    align-items: flex-start; /* Aligns to the top */
+    padding: 20px;
+}
+
+/* Score label styling */
+.score-label {
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+}

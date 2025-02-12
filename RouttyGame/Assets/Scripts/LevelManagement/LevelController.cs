@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using GameElements;
 using GameElements.Nodes;
+using Scores.Resources;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -34,6 +35,8 @@ namespace LevelManagement
 
         private void Start()
         {
+            ScoreManager.Instance.ResetScore();
+
             // Load code-defined spawn commands.
             var spawnCommands = SpawnSequence.GetSpawnCommands();
             StartCoroutine(SpawnCommandsCoroutine(spawnCommands));
