@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using GameManagement;
+using GameManagement.Resources;
 using Shapes;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -98,7 +100,7 @@ namespace GameElements
             if (elapsedTime > TimeLimit && RequiredCounterparts.Count > 0)
             {
                 Debug.LogWarning($"{gameObject.name} failed to connect with {RequiredCounterparts.Count} required counterpart(s) within {TimeLimit} seconds.");
-                // TODO: Implement penalty or failure logic.
+                GameManager.Instance.ChangeState(GameState.GameOver);
             }
         }
     }

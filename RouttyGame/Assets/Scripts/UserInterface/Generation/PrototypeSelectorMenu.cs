@@ -13,72 +13,45 @@ namespace UserInterface.Generation
         [SerializeField]
         private FontAsset _fontAsset;
 
+        [SerializeField]
+        private Sprite _routtyLogo;
+        
         [Header("Menu Options")]
         [SerializeField]
-        private List<SceneButtonProperties> _prototypes = new();
-
-        private Dictionary<Button, EventCallback<ClickEvent>> _createdButtons = new();
-
+        private SceneButtonProperties _prototype;
+        
         protected override void Generate()
         {
-            // Create elements
-            ResetEvents();
+            // Create a full-screen container with USS class "main-menu".
+            var mainMenu = new VisualElement();
+            mainMenu.name = "main-menu";
+            mainMenu.AddToClassList("main-menu");
+            mainMenu.style.width = Length.Percent(100);
+            mainMenu.style.height = Length.Percent(100);
+            mainMenu.RegisterCallback<ClickEvent>(evt => _prototype.RaiseEvent(evt));
 
-            var rootContainer = root.Create("root");
-            var backdrop = rootContainer.Create("backdrop");
-            var menuContainer = backdrop.Create("menu-container");
-            var titleContainer = menuContainer.Create("title-container");
-
-            var title = titleContainer.Create<Label>("title-label");
+            // Create and add the logo.
+            var logo = new VisualElement();
+            logo.name = "logo";
+            logo.AddToClassList("logo");
+            // Set the background image from the sprite.
+            if (_routtyLogo)
+                logo.style.backgroundImage = new StyleBackground(_routtyLogo.texture);
+            
+            mainMenu.Add(logo);
+            
+            // Create and add the subscript.
+            var subscript = new Label("Click anywhere to start the game");
+            subscript.name = "subscript";
+            subscript.AddToClassList("subscript");
             if (_fontAsset != null)
-            {
-                title.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
-            }
-
-            title.text = "Select Prototype";
-
-            foreach (var buttonType in _prototypes)
-            {
-                CreateButton(menuContainer, buttonType);
-            }
-        }
-
-        private void CreateButton(VisualElement container, SceneButtonProperties buttonProperties)
-        {
-            var buttonContainer = container.Create("button-container");
-            var button = buttonContainer.Create<Button>("button");
-
-            button.text = buttonProperties.Text;
-            if (_fontAsset != null)
-            {
-                button.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
-            }
-
-            if (!buttonProperties.HasScene)
-            {
-                button.SetEnabled(false);
-                return;
-            }
-
-            void EventCallBack(ClickEvent evt) => buttonProperties.RaiseEvent(evt);
-            button.RegisterCallback<ClickEvent>(EventCallBack);
-
-            _createdButtons.Add(button, EventCallBack);
-        }
-
-        private void OnDisable()
-        {
-            ResetEvents();
-        }
-
-        private void ResetEvents()
-        {
-            foreach (var (button, eventCallback) in _createdButtons)
-            {
-                button.UnregisterCallback(eventCallback);
-            }
-
-            _createdButtons.Clear();
+                subscript.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
+            
+            mainMenu.Add(subscript);
+            
+            // Set the root element.
+            root.Clear();
+            root.Add(mainMenu);
         }
     }
 }

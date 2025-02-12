@@ -10,20 +10,23 @@ namespace UserInterface.Generation
     [RequireComponent(typeof(UIDocument))]
     public abstract class UIDocumentGenerator : MonoBehaviour
     {
-        [SerializeField] private bool _showInEditor;
-        [SerializeField] private List<StyleSheet> _styleSheets = new();
+        [SerializeField]
+        private bool _showInEditor;
+
+        [SerializeField]
+        private List<StyleSheet> _styleSheets = new();
 
         protected UIDocument document;
         protected VisualElement root;
         protected MouseData mouseData;
 
-        protected readonly Dictionary<Button, EventCallback<ClickEvent>> createdButtons = new();
+        protected Dictionary<Button, EventCallback<ClickEvent>> createdButtons = new();
 
         private void OnEnable()
         {
             Clear();
-            
-            if (root != null) 
+
+            if (root != null)
                 Generate();
 
             mouseData = MouseData.Instance;
@@ -37,6 +40,11 @@ namespace UserInterface.Generation
 
         private void ResetEvents()
         {
+            if (createdButtons == null)
+            {
+                return;
+            }
+
             foreach (var (button, eventCallback) in createdButtons)
             {
                 button.UnregisterCallback(eventCallback);
@@ -50,12 +58,13 @@ namespace UserInterface.Generation
             if (Application.isPlaying)
                 return;
 
+            createdButtons ??= new Dictionary<Button, EventCallback<ClickEvent>>();
             Clear();
-            
+
             if (!_showInEditor)
                 return;
-            
-            if (root != null) 
+
+            if (root != null)
                 Generate();
         }
 

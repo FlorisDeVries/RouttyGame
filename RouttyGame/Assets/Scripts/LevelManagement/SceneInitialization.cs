@@ -1,9 +1,10 @@
 ﻿using _Common.Unity;
+using GameManagement;
 using GameManagement.Resources;
 using UnityEngine;
 using UserInput.Resources;
 
-namespace GameManagement
+namespace LevelManagement
 {
     public class SceneInitialization : MonoBehaviour
     {
