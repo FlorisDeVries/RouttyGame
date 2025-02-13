@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using GameManagement;
 using GameManagement.Resources;
+using Scores.Resources;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UserInterface.Generation;
 
 namespace UserInterface
 {
@@ -11,15 +12,16 @@ namespace UserInterface
         [SerializeField]
         private List<GameState> _visibleOnGameStates = new();
 
-        private UIDocument _uiDocument;
-        private VisualElement _root;
+        private UIDocumentGenerator _uiDocumentGenerator;
+        
+        private bool _leaderboardShown;
 
         private void OnEnable()
         {
-            _uiDocument = GetComponent<UIDocument>();
-            _root = _uiDocument.rootVisualElement;
+            _uiDocumentGenerator = GetComponent<UIDocumentGenerator>();
 
             GameManager.Instance.OnEnterStateEvent += ToggleVisibility;
+            ScoreManager.Instance.OnShowLeaderBoardsEvent += OnShowLeaderBoards;
 
             ToggleVisibility(GameManager.Instance.CurrentGameState);
         }
@@ -27,16 +29,35 @@ namespace UserInterface
         private void OnDisable()
         {
             GameManager.Instance.OnEnterStateEvent -= ToggleVisibility;
+            ScoreManager.Instance.OnShowLeaderBoardsEvent -= OnShowLeaderBoards;
         }
 
         private void ToggleVisibility(GameState newState)
         {
             SetVisibility(_visibleOnGameStates.Contains(newState));
         }
+        
+        private void OnShowLeaderBoards(bool show)
+        {
+            _leaderboardShown = show;
+            ToggleVisibility(GameManager.Instance.CurrentGameState);
+        }
 
         private void SetVisibility(bool show)
         {
-            _root.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
+            if (!_uiDocumentGenerator)
+            {
+                return;
+            }
+            
+            if (show && !_leaderboardShown)
+            {
+                _uiDocumentGenerator.Show();
+            }
+            else
+            {
+                _uiDocumentGenerator.Hide();
+            }
         }
     }
 }

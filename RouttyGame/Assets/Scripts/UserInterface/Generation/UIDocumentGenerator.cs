@@ -19,6 +19,7 @@ namespace UserInterface.Generation
         protected UIDocument document;
         protected VisualElement root;
         protected MouseData mouseData;
+        private bool _hidden;
 
         protected Dictionary<Button, EventCallback<ClickEvent>> createdButtons = new();
 
@@ -103,6 +104,34 @@ namespace UserInterface.Generation
 
             var top = root.panel.Pick(mouseData.ScreenPositionYInverted);
             mouseData.SetCursorOverUIState(document, top != null && !top.name.Contains("hidden"));
+        }
+
+        public virtual void Show()
+        {
+            if (!_hidden)
+                return;
+
+            // Not yet initialized
+            if (root == null)
+                return;
+            
+            _hidden = false;
+            root.style.display = DisplayStyle.Flex;
+            Clear();
+            Generate();
+        }
+
+        public virtual void Hide()
+        {
+            if (_hidden)
+                return;
+
+            // Not yet initialized
+            if (root == null)
+                return;
+
+            _hidden = true;
+            root.style.display = DisplayStyle.None;
         }
     }
 }

@@ -633,8 +633,9 @@ MonoBehaviour:
   _showInEditor: 1
   _styleSheets:
   - {fileID: 7433441132597879392, guid: 83c9a4b3d02c49f6817c9a87d0c3dde6, type: 3}
-  _fontAsset: {fileID: 11400000, guid: 4537e88bc36e8a04fa0e7f9f73c5bcf2, type: 2}
+  _fontAsset: {fileID: 11400000, guid: cf4e1308c6fe78c498cfaac2800dadf1, type: 2}
   _routtyLogo: {fileID: 1529508551586771504, guid: d36aff41f761f024e9d15a7eb4e2b094, type: 3}
+  _routtyBackground: {fileID: -1955448553306655712, guid: 294eea2cd781dd14cac159874d3d9622, type: 3}
   _prototype: {fileID: 11400000, guid: 8a91adb26f5c18a4bbde840bcf85e73a, type: 2}
 --- !u!114 &969917210
 MonoBehaviour:

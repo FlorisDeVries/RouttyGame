@@ -62,7 +62,6 @@ namespace GameElements
             if (RequiredCounterparts.Count == 0)
             {
                 isComplete = true;
-                Debug.Log($"{gameObject.name} connected with all required counterpart(s) within {TimeLimit} seconds.");
                 
                 // Scale down the disc visually, then disable it
                 timerRing.transform

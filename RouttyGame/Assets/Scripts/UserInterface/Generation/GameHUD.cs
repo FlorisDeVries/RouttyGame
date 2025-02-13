@@ -18,8 +18,8 @@ namespace UserInterface.Generation
         protected override void Generate()
         {
             // Create a full-screen container with USS class "game-hud".
-            var rootContainer = root.Create("root");
-            var hud = rootContainer.Create("hud");
+            var rootContainer = root.Create("root", false);
+            var hud = rootContainer.Create("hud", false);
 
             // Create and add the score label.
             _scoreLabel = hud.Create<Label>("score-label");

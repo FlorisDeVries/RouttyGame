@@ -27,12 +27,9 @@ namespace UserInterface.Generation
             // Create elements
             ResetEvents();
 
-            var rootContainer = root.Create("root");
-            var backdrop = rootContainer.Create("backdrop");
-            var menuContainer = backdrop.Create("menu-container");
-            var titleContainer = menuContainer.Create("title-container");
-            
-            var title = titleContainer.Create<Label>("title-label");
+            var rootContainer = root.Create("root", false);
+            var menuContainer = rootContainer.Create("menu-container");
+            var title = menuContainer.Create<Label>("title-label");
             if (_fontAsset != null)
             {
                 title.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
@@ -47,8 +44,7 @@ namespace UserInterface.Generation
 
         private void CreateButton(VisualElement container, ButtonProperties buttonProperties)
         {
-            var buttonContainer = container.Create("button-container");
-            var button = buttonContainer.Create<Button>("button");
+            var button = container.Create<Button>("button");
 
             button.text = buttonProperties.Text;
             if (_fontAsset != null)

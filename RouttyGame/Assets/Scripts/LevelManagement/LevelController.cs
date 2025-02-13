@@ -98,8 +98,6 @@ namespace LevelManagement
         public void RegisterConnection(SourceNode source, DestinationNode destination)
         {
             connectionCount++;
-            int required = activeSources.Count * activeDestinations.Count;
-            Debug.Log($"Connection registered: {connectionCount}/{required}");
 
             // Remove fulfilled requirement from source's timer.
             var sourceTimer = source.GetComponent<ConnectionRequirementTimer>();

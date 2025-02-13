@@ -1,4 +1,19 @@
 {
-	"name": "Scores",
-	"references":[ "GUID:9c6654926f0830042acd73329dab206c" ]
+    "name": "Scores",
+    "rootNamespace": "",
+    "references": [
+        "GUID:9c6654926f0830042acd73329dab206c",
+        "GUID:5540e30183c82e84b954c033c388e06c",
+        "GUID:fe25561d224ed4743af4c60938a59d0b",
+        "GUID:2073209246492244c9ad62c89d8d37bb"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

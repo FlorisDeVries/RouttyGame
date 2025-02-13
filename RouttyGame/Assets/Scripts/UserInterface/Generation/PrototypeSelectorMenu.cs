@@ -15,6 +15,8 @@ namespace UserInterface.Generation
 
         [SerializeField]
         private Sprite _routtyLogo;
+        [SerializeField]
+        private Sprite _routtyBackground;
         
         [Header("Menu Options")]
         [SerializeField]
@@ -23,35 +25,15 @@ namespace UserInterface.Generation
         protected override void Generate()
         {
             // Create a full-screen container with USS class "main-menu".
-            var mainMenu = new VisualElement();
-            mainMenu.name = "main-menu";
-            mainMenu.AddToClassList("main-menu");
-            mainMenu.style.width = Length.Percent(100);
-            mainMenu.style.height = Length.Percent(100);
+            var mainMenu = root.Create("main-menu");
+            mainMenu.style.backgroundImage = new StyleBackground(_routtyBackground.texture);
             mainMenu.RegisterCallback<ClickEvent>(evt => _prototype.RaiseEvent(evt));
-
-            // Create and add the logo.
-            var logo = new VisualElement();
-            logo.name = "logo";
-            logo.AddToClassList("logo");
-            // Set the background image from the sprite.
-            if (_routtyLogo)
-                logo.style.backgroundImage = new StyleBackground(_routtyLogo.texture);
-            
-            mainMenu.Add(logo);
             
             // Create and add the subscript.
-            var subscript = new Label("Click anywhere to start the game");
-            subscript.name = "subscript";
-            subscript.AddToClassList("subscript");
+            var subscript = mainMenu.Create<Label>("subscript");
+            subscript.text = "Click anywhere to start the game";
             if (_fontAsset != null)
                 subscript.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
-            
-            mainMenu.Add(subscript);
-            
-            // Set the root element.
-            root.Clear();
-            root.Add(mainMenu);
         }
     }
 }

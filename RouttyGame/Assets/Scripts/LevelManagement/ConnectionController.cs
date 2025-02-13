@@ -82,20 +82,17 @@ namespace LevelManagement
         {
             if (!_mouseData.CurrentlyHovering)
             {
-                Debug.LogWarning("Not hovering over anything");
                 return;
             }
             
             if (!_mouseData.CurrentlyHovering.TryGetComponent<Node>(out var node))
             {
-                Debug.LogWarning("Not hovering over a node");
                 return;
             }
             
             _sourceNode = node as SourceNode;
             if (!_sourceNode)
             {
-                Debug.LogWarning("Not hovering over a source node");
                 return;
             }
             
@@ -127,7 +124,6 @@ namespace LevelManagement
                     var rate = destinationNode!.DocumentsPerMinute * sourceNode!.DocumentsPerMinute;
 
                     _currentConnection.FinishConnection(_selectedNodes, rate);
-                    Debug.Log("Line completed successfully from source to destination!");
 
                     foreach (var selectedNode in _selectedNodes)
                     {
@@ -140,13 +136,11 @@ namespace LevelManagement
                 }
                 else
                 {
-                    Debug.Log("Invalid connection - end node is not a destination.");
                     ClearLine();
                 }
             }
             else
             {
-                Debug.Log("Line was too short, canceled.");
                 ClearLine();
             }
         }

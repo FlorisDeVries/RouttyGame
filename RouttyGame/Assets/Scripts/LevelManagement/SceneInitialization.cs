@@ -1,6 +1,7 @@
 ﻿using _Common.Unity;
 using GameManagement;
 using GameManagement.Resources;
+using Scores.Resources;
 using UnityEngine;
 using UserInput.Resources;
 
@@ -14,12 +15,15 @@ namespace LevelManagement
         private void OnEnable()
         {
             var mainCamera = Camera.main;
+            
+            ScoreManager.Instance.Authenticate();
 
             StartCoroutine(CoroutineHelper.DelayFixedFrames(
                 () =>
                 {
                     GameManager.Instance.ChangeState(GameState.Playing);
                     GameManager.Instance.SetMainCamera(mainCamera);
+                    ScoreManager.Instance.ShowLeaderBoards(false);
                 }, _sceneInitializationFrames)
             );
             
