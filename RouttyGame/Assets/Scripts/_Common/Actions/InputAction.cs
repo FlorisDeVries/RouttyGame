@@ -27,14 +27,29 @@ namespace _Common.Actions
         
         public void OnInputAction(InputAction.CallbackContext context)
         {
-            if (context.performed)
+            if (context.control.device is Touchscreen)
             {
-                Value = true;
-                OnActivated.Invoke();
+                if (context.phase == InputActionPhase.Started)
+                {
+                    Value = true;
+                    OnActivated.Invoke();
+                }
+                else if (context.phase == InputActionPhase.Canceled)
+                {
+                    Value = false;
+                }
             }
-            else if (context.canceled)
+            else
             {
-                Value = false;
+                if (context.performed)
+                {
+                    Value = true;
+                    OnActivated.Invoke();
+                }
+                else if (context.canceled)
+                {
+                    Value = false;
+                }
             }
         }
     }
