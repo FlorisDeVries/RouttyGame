@@ -45,8 +45,8 @@ namespace UserInterface.Generation
         {
             // Update the score label.
             _scoreLabel.text = $"{ScoreManager.Instance.CurrentScore}";
-            _extraLabel.text = mouseData.ScreenPosition.ToString();
-            _extraLabel2.text = mouseData.WorldPosition.ToString();
+            _extraLabel.text = mouseData.CursorOverUI.ToString();
+            _extraLabel2.text = mouseData.CurrentlyHovering.name;
         }
     }
 }
