@@ -1,9 +1,7 @@
 name: Build and Deploy Unity WebGL to GitHub Pages
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
