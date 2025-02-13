@@ -30,7 +30,19 @@ namespace UserInput
             if (!_gameManager.MainCamera)
                 return;
 
-            _screenPos = Mouse.current.position.ReadValue();
+            if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
+            {
+                _screenPos = Touchscreen.current.primaryTouch.position.ReadValue();
+            }
+            else if (Mouse.current != null)
+            {
+                _screenPos = Mouse.current.position.ReadValue();
+            }
+            else
+            {
+                return;
+            }
+
             var worldPosition = _gameManager.MainCamera
                 .ScreenToWorldPoint(_screenPos);
 

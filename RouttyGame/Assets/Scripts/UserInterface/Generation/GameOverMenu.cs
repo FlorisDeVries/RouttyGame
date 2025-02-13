@@ -113,6 +113,7 @@ namespace UserInterface.Generation
             }
 
             await LeaderboardsService.Instance.AddPlayerScoreAsync(leaderboardId, score);
+            ScoreManager.Instance.FetchLeaderboard();
             _scoreSubmitted = true;
             
             Clear();
