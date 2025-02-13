@@ -37,8 +37,6 @@ namespace LevelManagement
 
         private void OnPrimaryInputAction(bool held)
         {
-            ScoreManager.Instance.AddScore(1);
-            
             if (held)
             {
                 StartDraw();

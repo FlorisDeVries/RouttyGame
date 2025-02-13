@@ -14,6 +14,9 @@ namespace UserInterface.Generation
         private FontAsset _fontAsset;
         
         private Label _scoreLabel;
+        
+        private Label _extraLabel;
+        private Label _extraLabel2;
 
         protected override void Generate()
         {
@@ -26,12 +29,24 @@ namespace UserInterface.Generation
             if (_fontAsset != null)
                 _scoreLabel.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
             _scoreLabel.text = "0";
+            
+            _extraLabel = hud.Create<Label>("score-label");
+            if (_fontAsset != null)
+                _extraLabel.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
+            _extraLabel.text = "0";
+            
+            _extraLabel2 = hud.Create<Label>("score-label");
+            if (_fontAsset != null)
+                _extraLabel2.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
+            _extraLabel2.text = "0";
         }
 
         private void FixedUpdate()
         {
             // Update the score label.
             _scoreLabel.text = $"{ScoreManager.Instance.CurrentScore}";
+            _extraLabel.text = mouseData.ScreenPosition.ToString();
+            _extraLabel2.text = mouseData.WorldPosition.ToString();
         }
     }
 }
