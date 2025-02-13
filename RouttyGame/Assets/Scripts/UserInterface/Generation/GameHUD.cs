@@ -1,5 +1,6 @@
 ﻿using System;
 using _Common.Extensions;
+using LevelManagement;
 using Scores.Resources;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -17,6 +18,7 @@ namespace UserInterface.Generation
         
         private Label _extraLabel;
         private Label _extraLabel2;
+        private Label _extraLabel3;
 
         protected override void Generate()
         {
@@ -39,14 +41,20 @@ namespace UserInterface.Generation
             if (_fontAsset != null)
                 _extraLabel2.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
             _extraLabel2.text = "0";
+            
+            _extraLabel3 = hud.Create<Label>("score-label");
+            if (_fontAsset != null)
+                _extraLabel3.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
+            _extraLabel3.text = "0";
         }
 
         private void FixedUpdate()
         {
             // Update the score label.
             _scoreLabel.text = $"{ScoreManager.Instance.CurrentScore}";
-            _extraLabel.text = mouseData.CursorOverUI.ToString();
-            _extraLabel2.text = mouseData.CurrentlyHovering.name;
+            _extraLabel.text = mouseData.CurrentlyHovering.name;
+            _extraLabel2.text = ConnectionController.PrimaryInputAction.ToString();
+            _extraLabel3.text = ConnectionController.Held.ToString();
         }
     }
 }
