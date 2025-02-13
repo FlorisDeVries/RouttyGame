@@ -22,6 +22,11 @@ jobs:
           restore-keys: |
             Library-WebGL-
 
+      - name: Restore UPM Packages
+        run: |
+          echo "Restoring Unity Packages..."
+          /opt/unity/Editor/Unity -projectPath RouttyGame -quit -batchmode -executeMethod UnityEditor.PackageManager.Client.Resolve
+
       - name: Build WebGL
         uses: game-ci/unity-builder@v4.3.0
         with:
