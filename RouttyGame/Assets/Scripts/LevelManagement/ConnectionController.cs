@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GameElements;
 using GameElements.Nodes;
+using Scores.Resources;
 using UnityEngine;
 using UserInput.Resources;
 
@@ -36,6 +37,8 @@ namespace LevelManagement
 
         private void OnPrimaryInputAction(bool held)
         {
+            ScoreManager.Instance.AddScore(1);
+            
             if (held)
             {
                 StartDraw();

@@ -1,4 +1,5 @@
-﻿using _Common.Extensions;
+﻿using System.Collections.Generic;
+using _Common.Extensions;
 using Scores.Resources;
 using Unity.Services.Core;
 using UnityEngine;
@@ -69,7 +70,13 @@ namespace UserInterface.Generation
                 scoreHeader.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
             }
 
-            foreach (var entry in ScoreManager.Instance.LeaderboardEntries)
+            var entries = ScoreManager.Instance.LeaderboardEntries;
+            if (entries.Count == 0)
+            {
+                entries = _dummyLeaderboardEntries;
+            }
+
+            foreach (var entry in entries)
             {
                 var row = table.Create("leaderboard-row");
 
@@ -96,5 +103,19 @@ namespace UserInterface.Generation
             ScoreManager.Instance.FetchLeaderboard();
             base.Show();
         }
+
+        private List<ScoreManager.LeaderboardEntry> _dummyLeaderboardEntries = new()
+        {
+            new ScoreManager.LeaderboardEntry { Rank = 1, PlayerName = "Player 1", Score = 100 },
+            new ScoreManager.LeaderboardEntry { Rank = 2, PlayerName = "Player 2", Score = 90 },
+            new ScoreManager.LeaderboardEntry { Rank = 3, PlayerName = "Player 3", Score = 80 },
+            new ScoreManager.LeaderboardEntry { Rank = 4, PlayerName = "Player 4", Score = 70 },
+            new ScoreManager.LeaderboardEntry { Rank = 5, PlayerName = "Player 5", Score = 60 },
+            new ScoreManager.LeaderboardEntry { Rank = 6, PlayerName = "Player 6", Score = 50 },
+            new ScoreManager.LeaderboardEntry { Rank = 7, PlayerName = "Player 7", Score = 40 },
+            new ScoreManager.LeaderboardEntry { Rank = 8, PlayerName = "Player 8", Score = 30 },
+            new ScoreManager.LeaderboardEntry { Rank = 9, PlayerName = "Player 9", Score = 20 },
+            new ScoreManager.LeaderboardEntry { Rank = 10, PlayerName = "Player 10", Score = 10 }
+        };
     }
 }

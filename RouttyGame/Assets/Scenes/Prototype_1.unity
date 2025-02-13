@@ -1217,7 +1217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db74dcf45f5244d78c6c861601054900, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _showInEditor: 0
+  _showInEditor: 1
   _styleSheets:
   - {fileID: 7433441132597879392, guid: 83c9a4b3d02c49f6817c9a87d0c3dde6, type: 3}
   _fontAsset: {fileID: 11400000, guid: 4537e88bc36e8a04fa0e7f9f73c5bcf2, type: 2}
