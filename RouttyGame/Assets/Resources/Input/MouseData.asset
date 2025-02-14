@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7b4efc812f847e4963866a2f09f2bda, type: 3}
   m_Name: MouseData
   m_EditorClassIdentifier: 
+  _interactionLayers:
+    serializedVersion: 2
+    m_Bits: 961

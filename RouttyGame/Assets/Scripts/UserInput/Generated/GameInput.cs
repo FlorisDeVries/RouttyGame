@@ -72,7 +72,7 @@ namespace UserInput.Generated
                 {
                     ""name"": """",
                     ""id"": ""a27cceaa-b275-4e67-8860-71051746aace"",
-                    ""path"": ""<Touchscreen>/Press"",
+                    ""path"": ""<Touchscreen>/primaryTouch/press"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

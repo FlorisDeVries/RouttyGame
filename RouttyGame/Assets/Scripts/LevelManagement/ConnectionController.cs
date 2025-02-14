@@ -13,7 +13,6 @@ namespace LevelManagement
         private Connection _currentConnection;
         
         public static bool Held { get; private set; }
-        public static int PrimaryInputAction { get; private set; }
         
         [SerializeField]
         private LevelController _levelController;
@@ -31,7 +30,6 @@ namespace LevelManagement
             _mouseData = MouseData.Instance;
             
             _gameplayInputActions.PrimaryInputAction.OnValueChanged += OnPrimaryInputAction;
-            PrimaryInputAction = 0;
         }
 
         private void OnDisable()
@@ -41,8 +39,8 @@ namespace LevelManagement
 
         private void OnPrimaryInputAction(bool held)
         {
-            PrimaryInputAction++;
             Held = held;
+            _mouseData.UpdateData();
 
             if (held)
             {

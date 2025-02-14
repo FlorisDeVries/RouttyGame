@@ -32,29 +32,32 @@ namespace UserInterface.Generation
                 _scoreLabel.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
             _scoreLabel.text = "0";
             
-            _extraLabel = hud.Create<Label>("score-label");
-            if (_fontAsset != null)
-                _extraLabel.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
-            _extraLabel.text = "0";
-            
-            _extraLabel2 = hud.Create<Label>("score-label");
-            if (_fontAsset != null)
-                _extraLabel2.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
-            _extraLabel2.text = "0";
-            
-            _extraLabel3 = hud.Create<Label>("score-label");
-            if (_fontAsset != null)
-                _extraLabel3.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
-            _extraLabel3.text = "0";
+            // _extraLabel = hud.Create<Label>("score-label");
+            // if (_fontAsset != null)
+            //     _extraLabel.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
+            // _extraLabel.text = "0";
+            //
+            // _extraLabel2 = hud.Create<Label>("score-label");
+            // if (_fontAsset != null)
+            //     _extraLabel2.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
+            // _extraLabel2.text = "0";
+            //
+            // _extraLabel3 = hud.Create<Label>("score-label");
+            // if (_fontAsset != null)
+            //     _extraLabel3.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
+            // _extraLabel3.text = "0";
         }
 
         private void FixedUpdate()
         {
-            // Update the score label.
+            // Update the score label.  
             _scoreLabel.text = $"{ScoreManager.Instance.CurrentScore}";
-            _extraLabel.text = mouseData.CurrentlyHovering.name;
-            _extraLabel2.text = ConnectionController.PrimaryInputAction.ToString();
-            _extraLabel3.text = ConnectionController.Held.ToString();
+            
+            // if (mouseData.CurrentlyHovering)
+            //     _extraLabel.text = mouseData.CurrentlyHovering.name;
+            //
+            // _extraLabel2.text = mouseData.WorldPosition.ToString();
+            // _extraLabel3.text = ConnectionController.Held.ToString();
         }
     }
 }
