@@ -116,7 +116,6 @@ namespace UserInterface.Generation
                 // Make sure screenPos is a real value
                 if (float.IsNaN(screenPos.x) || float.IsNaN(screenPos.y))
                     return;
-                Debug.Log(screenPos);
 
                 var correctedScreenPos = PanelSettingsManager.Instance.ScaleToScreenSpace(screenPos);
                 var worldPos =

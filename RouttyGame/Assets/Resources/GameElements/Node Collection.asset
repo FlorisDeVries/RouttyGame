@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: Node Collection
   m_EditorClassIdentifier: 
   ShapeToSpriteDictionary:
-    keyData: 000000000100000002000000
+    keyData: 00000000010000000200000003000000
     valueData:
-    - {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-    - {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-    - {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+    - {fileID: -6231044458718751821, guid: 6a8e33ee90dd3154394d71eda6c022a4, type: 3}
+    - {fileID: -1843197933104017171, guid: 76b3d1c189294bd428509dd0aef6f3fd, type: 3}
+    - {fileID: 9164359298635338950, guid: c001ccb6ab25bd64591326709f2cd7a6, type: 3}
+    - {fileID: 3980168229369012863, guid: 2fa3635613be76d46922ae2006f694d8, type: 3}
   ColorToColorDictionary:
-    keyData: 000000000100000002000000
+    keyData: 00000000010000000200000003000000
     valueData:
     - {r: 0.95686275, g: 0.26274508, b: 0.21176466, a: 1}
     - {r: 0.2980392, g: 0.68627447, b: 0.31372547, a: 1}
     - {r: 0.12941177, g: 0.5882353, b: 0.9529412, a: 1}
+    - {r: 0.97647053, g: 0.65882355, b: 0.145098, a: 1}

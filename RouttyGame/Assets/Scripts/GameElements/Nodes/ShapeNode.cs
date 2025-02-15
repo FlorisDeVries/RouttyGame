@@ -37,6 +37,7 @@ namespace GameElements.Nodes
     {
         Circle,
         Square,
-        Triangle
+        Triangle,
+        Star
     }
 }

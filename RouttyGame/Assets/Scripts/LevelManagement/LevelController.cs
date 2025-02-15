@@ -52,7 +52,6 @@ namespace LevelManagement
         {
             ScoreManager.Instance.ResetScore();
 
-            // Load code-defined spawn commands.
             RouttyIsPurchased = false;
             var spawnCommands = SpawnSequence.GetSpawnCommands();
             StartCoroutine(SpawnCommandsCoroutine(spawnCommands));
@@ -78,7 +77,7 @@ namespace LevelManagement
                 GameManager.Instance.ChangeState(GameState.Victory);
                 return;
             }
-            
+
             var spawnPos = GetSpawnPosition(command.SpawnType);
 
             switch (command.SpawnType)
@@ -87,7 +86,7 @@ namespace LevelManagement
                     var source = Instantiate(SourcePrefab, spawnPos, Quaternion.identity, transform);
                     _activeSources.Add(source);
                     var sourceTimer = source.gameObject.GetComponent<ConnectionRequirementTimer>();
-                    sourceTimer.Setup(new List<UnityEngine.Object>(_activeDestinations), 15f);
+                    sourceTimer.Setup(new List<UnityEngine.Object>(_activeDestinations), 5 + (.7f * command.WaveIndex));
                     break;
                 case SpawnType.Color:
                     if (RouttyIsPurchased) break;
@@ -108,38 +107,20 @@ namespace LevelManagement
                     destinationNode.Setup(command.Shape, command.Color);
                     _activeDestinations.Add(destinationNode);
                     var destTimer = destinationNode.gameObject.GetComponent<ConnectionRequirementTimer>();
-                    destTimer.Setup(new List<UnityEngine.Object>(_activeSources), 15f);
+                    destTimer.Setup(new List<UnityEngine.Object>(_activeSources), 5 + (.7f * command.WaveIndex));
                     break;
             }
         }
 
         public void RegisterConnection(SourceNode source, DestinationNode destination)
         {
-            // Remove fulfilled requirement from source's timer.
             var sourceTimer = source.GetComponent<ConnectionRequirementTimer>();
             if (sourceTimer != null)
                 sourceTimer.RemoveRequirement(destination);
 
-            // Remove fulfilled requirement from destination's timer.
             var destTimer = destination.GetComponent<ConnectionRequirementTimer>();
             if (destTimer != null)
                 destTimer.RemoveRequirement(source);
-        }
-
-        private Vector3 GetValidSpawnPosition(List<SpawnArea> areas)
-        {
-            const int maxAttempts = 10;
-            const float collisionRadius = 2f;
-            var position = Vector3.zero;
-            for (var i = 0; i < maxAttempts; i++)
-            {
-                position = areas[Random.Range(0, areas.Count)].GetRandomPosition();
-                if (Physics2D.OverlapCircleAll(position, collisionRadius).Length == 0)
-                    return position;
-            }
-
-            Debug.LogWarning($"Failed to find a valid spawn position after {maxAttempts} attempts.");
-            return position;
         }
 
         private Vector3 GetSpawnPosition(SpawnType type)
@@ -187,8 +168,25 @@ namespace LevelManagement
                     return spawnPoint;
             }
 
-            // Fallback (shouldn't happen if list isn't empty)
             return spawnPoints[^1];
+        }
+
+        public void HighlightMissingDestinations(SourceNode node)
+        {
+            var destinations = _activeDestinations
+                .Where(dest => !node.ConnectedToNode(dest)).ToList();
+            foreach (var destination in destinations)
+            {
+                destination.Highlight(true);
+            }
+        }
+
+        public void DisableAllDestinationHighlights()
+        {
+            foreach (var destination in _activeDestinations)
+            {
+                destination.Highlight(false);
+            }
         }
 
         /// <summary>
@@ -201,20 +199,16 @@ namespace LevelManagement
             RouttyIsPurchased = true;
             _routtyNode.Enable();
 
-            // Tweak these parameters as needed.
             var targetPos = _routtyNode.transform.position;
-            var overshootDistance = 1f; // How far the node moves in the first phase.
-            var phaseOneDuration = 0.3f; // Duration for the overshoot.
-            var phaseTwoDuration = 0.7f; // Duration for the final move to target.
+            var overshootDistance = 1f;
+            var phaseOneDuration = 0.3f;
+            var phaseTwoDuration = 0.7f;
 
-            // Animate color nodes.
             foreach (var colorNode in _activeColors)
             {
                 var seq = DOTween.Sequence();
 
-                // Determine direction from the target.
                 var dir = (colorNode.transform.position - targetPos).normalized;
-                // Calculate an overshoot position further away in that direction.
                 var overshootPos = colorNode.transform.position + dir * overshootDistance;
 
                 seq.Append(
@@ -227,7 +221,6 @@ namespace LevelManagement
                         .SetEase(Ease.InQuad)
                 );
 
-                // Optional: add a slight rotation for a playful effect.
                 seq.Join(
                     colorNode.transform.DORotate(
                         new Vector3(0, 0, Random.Range(-90f, 90f)),
@@ -237,7 +230,6 @@ namespace LevelManagement
                 );
             }
 
-            // Animate shape nodes.
             foreach (var shapeNode in _activeShapes)
             {
                 var seq = DOTween.Sequence();
@@ -255,7 +247,6 @@ namespace LevelManagement
                         .SetEase(Ease.InQuad)
                 );
 
-                // Optional rotation for playfulness.
                 seq.Join(
                     shapeNode.transform.DORotate(
                         new Vector3(0, 0, Random.Range(-90f, 90f)),

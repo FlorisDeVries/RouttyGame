@@ -44,7 +44,7 @@ namespace UserInterface.Generation
             title.text = _title;
 
             var highScore = panel.Create<Label>("high-score-label");
-            highScore.text = $"High Score: {ScoreManager.Instance.CurrentScore}";
+            highScore.text = $"Score: {ScoreManager.Instance.CurrentScore}";
 
             var nameInput = panel.Create<TextField>("name-input");
             nameInput.value = ScoreManager.Instance.PlayerName;
@@ -53,7 +53,6 @@ namespace UserInterface.Generation
             var submitButton = panel.Create<Button>("button");
             submitButton.text = "Submit";
             if (_scoreSubmitted) submitButton.SetEnabled(false);
-
 
             void SubmitScore(ClickEvent evt)
             {

@@ -44,6 +44,11 @@ namespace GameElements.Nodes
                 connection.UpdateConnectionPointPosition(point, transform.position);
             }
         }
+        
+        public bool ConnectedToNode(Node node)
+        {
+            return Connections != null && Connections.Keys.Any(connection => connection.ConnectedToNode(node));
+        }
     }
     
     public enum NodeType

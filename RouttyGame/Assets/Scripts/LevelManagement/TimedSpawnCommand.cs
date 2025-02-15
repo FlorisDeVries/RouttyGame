@@ -33,5 +33,7 @@ namespace LevelManagement
         [Tooltip("Optional: For Shape nodes or Destination nodes, select the desired shape.")]
         [ShowIf(nameof(ShouldShowShape))]
         public NodeShape Shape;
+
+        public float WaveIndex;
     }
 }

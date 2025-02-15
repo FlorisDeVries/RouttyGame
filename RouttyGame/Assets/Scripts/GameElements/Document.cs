@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _Common.Events.Resources;
 using DG.Tweening;
 using GameElements.Nodes;
@@ -28,6 +29,7 @@ namespace GameElements
         public SpriteRenderer StampSpriteRenderer;
 
         private Tween _moveTween;
+        private Sequence _scaleSeq;
 
         private List<float> _cumulativeProgress;
         private List<float> _segmentDurations;
@@ -54,6 +56,12 @@ namespace GameElements
         {
             _moveTween?.Kill();
             GameManager.Instance.OnEnterStateEvent -= OnEnterState;
+        }
+
+        private void OnDestroy()
+        {
+            _moveTween?.Kill();
+            _scaleSeq?.Kill();
         }
 
         public void SetPath(List<ConnectionPoint> path)
@@ -126,8 +134,8 @@ namespace GameElements
                 })
                 .OnComplete(OnFinalizePath);
 
-            var scaleSeq = DOTween.Sequence();
-            scaleSeq.Append(
+            _scaleSeq = DOTween.Sequence();
+            _scaleSeq.Append(
                 transform.DOScale(Vector3.one, spawnAnimationDuration)
                     .SetEase(Ease.OutBack)
             );
@@ -138,25 +146,25 @@ namespace GameElements
             for (var i = 1; i < _path.Count - 1; i++)
             {
                 cumulativeTime += _segmentDurations[i - 1];
-                scaleSeq.Insert(cumulativeTime - bounceDuration,
+                _scaleSeq.Insert(cumulativeTime - bounceDuration,
                     transform.DOScale(0.5f, bounceDuration)
                         .SetEase(Ease.InSine)
                 );
 
-                scaleSeq.Insert(cumulativeTime,
+                _scaleSeq.Insert(cumulativeTime,
                     transform.DOScale(1f, bounceDuration)
                         .SetEase(Ease.OutSine)
                 );
             }
 
             cumulativeTime += _segmentDurations[^1];
-            scaleSeq.Insert(cumulativeTime - despawnAnimationDuration,
+            _scaleSeq.Insert(cumulativeTime - despawnAnimationDuration,
                 transform.DOScale(Vector3.zero, despawnAnimationDuration)
                     .SetEase(Ease.InBack)
             );
 
             _moveTween.Play();
-            scaleSeq.Play();
+            _scaleSeq.Play();
         }
         
         private void OnFinalizePath()

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameElements;
 using GameElements.Nodes;
-using Scores.Resources;
 using UnityEngine;
 using UserInput.Resources;
 
@@ -106,6 +105,7 @@ namespace LevelManagement
             _selectedNodes.Clear();
             _selectedNodes.Add(node);
             _sourceNode.HighlightConnections(HighlightType.Secondary);
+            _levelController.HighlightMissingDestinations(_sourceNode);
             
             // Spawn a line renderer
             _currentConnection = Instantiate(ConnectionPrefab, transform);
@@ -119,6 +119,7 @@ namespace LevelManagement
             
             _isDrawing = false;
             _sourceNode.HighlightConnections(HighlightType.Disabled);
+            _levelController.DisableAllDestinationHighlights();
             
             if (_selectedNodes.Count > 1)
             {

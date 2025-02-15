@@ -38,6 +38,7 @@ namespace GameElements.Nodes
     {
         Red,
         Green,
-        Blue
+        Blue,
+        Yellow
     }
 }

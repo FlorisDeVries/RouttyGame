@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
+using DG.DemiEditor;
 using GameElements.Nodes;
+using UnityEngine;
 
 namespace LevelManagement
 {
@@ -9,60 +12,89 @@ namespace LevelManagement
         {
             var commands = new List<TimedSpawnCommand>();
             var cumulativeTime = 0f;
-            var spawnOffset = 0.5f; // time between spawns in a connection
-            var connectionGap = 1f; // gap between connections
-            var winOffset = 25f; // time between last node and win command
+            var spawnOffset = 1f;
+            var connectTime = 10f;
 
-            // Wave 1: Red & Circle
-            cumulativeTime += spawnOffset;
-            commands.Add(new TimedSpawnCommand { SpawnTime = cumulativeTime, SpawnType = SpawnType.Source });
-            
-            cumulativeTime += spawnOffset;
-            commands.Add(new TimedSpawnCommand { SpawnTime = cumulativeTime, SpawnType = SpawnType.Color, Color = NodeColor.Red });
-            
-            cumulativeTime += spawnOffset;
-            commands.Add(new TimedSpawnCommand { SpawnTime = cumulativeTime, SpawnType = SpawnType.Shape, Shape = NodeShape.Circle });
-            
-            cumulativeTime += spawnOffset;
-            commands.Add(new TimedSpawnCommand { SpawnTime = cumulativeTime, SpawnType = SpawnType.Destination, Color = NodeColor.Red, Shape = NodeShape.Circle });
 
-            // Gap before next connection.
-            cumulativeTime += connectionGap;
+            var colors = new[] { NodeColor.Red, NodeColor.Green, NodeColor.Blue, NodeColor.Yellow };
+            var shapes = new[] { NodeShape.Circle, NodeShape.Square, NodeShape.Triangle, NodeShape.Star };
 
-            // Wave 2: Green & Square            
-            cumulativeTime += spawnOffset;
-            commands.Add(new TimedSpawnCommand { SpawnTime = cumulativeTime, SpawnType = SpawnType.Color, Color = NodeColor.Green });
-            
-            cumulativeTime += spawnOffset;
-            commands.Add(new TimedSpawnCommand { SpawnTime = cumulativeTime, SpawnType = SpawnType.Shape, Shape = NodeShape.Square });
-            
-            cumulativeTime += spawnOffset;
-            commands.Add(new TimedSpawnCommand { SpawnTime = cumulativeTime, SpawnType = SpawnType.Destination, Color = NodeColor.Green, Shape = NodeShape.Square });
+            var combinations = new List<(NodeColor color, NodeShape shape)>();
+            foreach (var color in colors)
+            {
+                combinations.AddRange(shapes.Select(shape => (color, shape)));
+            }
 
-            // Gap before next connection.
-            cumulativeTime += connectionGap;
+            combinations.Shuffle();
 
-            // Wave 3: Blue & Triangle            
-            cumulativeTime += spawnOffset;
-            commands.Add(new TimedSpawnCommand { SpawnTime = cumulativeTime, SpawnType = SpawnType.Color, Color = NodeColor.Blue });
-            
-            cumulativeTime += spawnOffset;
-            commands.Add(new TimedSpawnCommand { SpawnTime = cumulativeTime, SpawnType = SpawnType.Shape, Shape = NodeShape.Triangle });
-            
-            cumulativeTime += spawnOffset;
-            commands.Add(new TimedSpawnCommand { SpawnTime = cumulativeTime, SpawnType = SpawnType.Destination, Color = NodeColor.Blue, Shape = NodeShape.Triangle });
+            var totalDestinations = 15;
 
-            // Gap before next connection.
-            cumulativeTime += connectionGap;
+            var spawnedColors = new HashSet<NodeColor>();
+            var spawnedShapes = new HashSet<NodeShape>();
 
-            // Wave 4: An additional source
             cumulativeTime += spawnOffset;
-            commands.Add(new TimedSpawnCommand { SpawnTime = cumulativeTime, SpawnType = SpawnType.Source });
-            
-            // Win command
-            cumulativeTime += winOffset;
+            commands.Add(new TimedSpawnCommand
+                { SpawnTime = cumulativeTime, SpawnType = SpawnType.Source, WaveIndex = 0 });
+            for (var wave = 0; wave < totalDestinations; wave++)
+            {
+                if (wave is 4 or 10)
+                {
+                    cumulativeTime += spawnOffset;
+                    commands.Add(new TimedSpawnCommand
+                    {
+                        SpawnTime = cumulativeTime,
+                        SpawnType = SpawnType.Source,
+                        WaveIndex = wave
+                    });
+                    cumulativeTime += connectTime;
+                }
+
+                var (waveColor, waveShape) = combinations[wave];
+
+                cumulativeTime += spawnOffset;
+                if (!spawnedColors.Contains(waveColor))
+                {
+                    commands.Add(new TimedSpawnCommand
+                    {
+                        SpawnTime = cumulativeTime,
+                        SpawnType = SpawnType.Color,
+                        Color = waveColor,
+                        WaveIndex = wave
+                    });
+                    spawnedColors.Add(waveColor);
+                }
+
+                cumulativeTime += spawnOffset;
+                if (!spawnedShapes.Contains(waveShape))
+                {
+                    commands.Add(new TimedSpawnCommand
+                    {
+                        SpawnTime = cumulativeTime,
+                        SpawnType = SpawnType.Shape,
+                        Shape = waveShape,
+                        WaveIndex = wave
+                    });
+                    spawnedShapes.Add(waveShape);
+                }
+
+                cumulativeTime += spawnOffset;
+                commands.Add(new TimedSpawnCommand
+                {
+                    SpawnTime = cumulativeTime,
+                    SpawnType = SpawnType.Destination,
+                    Color = waveColor,
+                    Shape = waveShape,
+                    WaveIndex = wave
+                });
+
+                cumulativeTime += connectTime;
+            }
+
+            cumulativeTime += 30f;
             commands.Add(new TimedSpawnCommand { SpawnTime = cumulativeTime, SpawnType = SpawnType.Win });
-            
+
+            Debug.Log($"Total game time: {cumulativeTime} seconds");
+
             return commands;
         }
     }

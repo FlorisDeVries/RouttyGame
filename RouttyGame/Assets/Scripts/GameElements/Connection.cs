@@ -141,6 +141,11 @@ namespace GameElements
             var doc = Instantiate(documentPrefab, _connectionPoints[0].Position, Quaternion.identity, transform);
             doc.SetPath(_connectionPoints);
         }
+
+        public bool ConnectedToNode(Node node)
+        {
+            return _connectionPoints.Exists(cp => cp.Node == node);
+        }
     }
     
     public enum HighlightType

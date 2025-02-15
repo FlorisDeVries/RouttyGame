@@ -14,6 +14,9 @@ namespace GameElements.Nodes
 
         [ShowInInspector] 
         public NodeColor Color { get; private set; }
+        
+        [SerializeField]
+        private SpriteRenderer _highlight;
 
         [Tooltip("Documents per minute that this destination can receive")]
         public int DocumentsPerMinute = 15;
@@ -23,6 +26,7 @@ namespace GameElements.Nodes
         private void OnEnable()
         {
             _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            Highlight(false);
         }
 
         public void Setup(NodeShape shape, NodeColor color)
@@ -32,6 +36,18 @@ namespace GameElements.Nodes
 
             _spriteRenderer.sprite = NodeCollection.Instance.ShapeToSpriteDictionary[Shape];
             _spriteRenderer.color = NodeCollection.Instance.ColorToColorDictionary[Color];
+            
+            _highlight.sprite = _spriteRenderer.sprite;
+        }
+
+        public void HighlightConnections(HighlightType highlightType)
+        {
+            if (Connections == null) return;
+
+            foreach (var connection in Connections.Keys)
+            {
+                connection.Highlight(highlightType);
+            }
         }
 
         public override bool CanConnect(List<Node> currentPath, Node previousNode)
@@ -39,6 +55,11 @@ namespace GameElements.Nodes
             var anyColorMatch = currentPath.Exists(node => node.MatchColor(Color));
             var anyShapeMatch = currentPath.Exists(node => node.MatchShape(Shape));
             return anyColorMatch && anyShapeMatch && base.CanConnect(currentPath, previousNode);
+        }
+        
+        public void Highlight(bool highlight)
+        {
+            _highlight.enabled = highlight;
         }
     }
 }

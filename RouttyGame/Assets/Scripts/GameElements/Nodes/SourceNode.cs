@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 namespace GameElements.Nodes
@@ -8,6 +8,14 @@ namespace GameElements.Nodes
         public override NodeType NodeType => NodeType.Source;
 
         public int DocumentsPerMinute = 10;
+        
+        [SerializeField]
+        private SpriteRenderer _highlight;
+
+        private void OnEnable()
+        {
+            Highlight(false);
+        }
 
         public void HighlightConnections(HighlightType highlightType)
         {
@@ -17,6 +25,11 @@ namespace GameElements.Nodes
             {
                 connection.Highlight(highlightType);
             }
+        }
+        
+        public void Highlight(bool highlight)
+        {
+            _highlight.enabled = highlight;
         }
     }
 }
