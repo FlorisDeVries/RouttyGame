@@ -1,4 +1,5 @@
-﻿using _Common.Unity.Resources;
+﻿using _Common.Events;
+using _Common.Unity.Resources;
 using GameManagement.Resources;
 using UnityEngine;
 using UnityEngine.UIElements;

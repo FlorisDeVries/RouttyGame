@@ -155,4 +155,4 @@ MonoBehaviour:
   DocumentsPerMinute: 0
   DefaultColor: {r: 0.2588235, g: 0.2588235, b: 0.2588235, a: 0.5019608}
   PrimaryHighlightColor: {r: 1, g: 1, b: 1, a: 1}
-  SecondaryHighlightColor: {r: 0.61960775, g: 0.61960775, b: 0.61960775, a: 1}
+  SecondaryHighlightColor: {r: 0, g: 0.627451, b: 0.7607843, a: 1}

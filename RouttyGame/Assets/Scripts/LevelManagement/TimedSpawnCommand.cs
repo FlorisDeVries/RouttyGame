@@ -10,7 +10,8 @@ namespace LevelManagement
         Source,
         Color,
         Shape,
-        Destination
+        Destination,
+        Win
     }
     
     [Serializable]

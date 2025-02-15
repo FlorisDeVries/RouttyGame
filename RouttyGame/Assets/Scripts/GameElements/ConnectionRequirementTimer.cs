@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using _Common.Events.Resources;
 using DG.Tweening;
 using GameManagement;
 using GameManagement.Resources;
+using Scores.Resources;
 using Shapes;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -10,9 +12,6 @@ namespace GameElements
 {
     public class ConnectionRequirementTimer : MonoBehaviour
     {
-        [Header("Timer Settings")]
-        public bool IsSource;
-
         public float TimeLimit = 5f;
         public List<Object> RequiredCounterparts = new();
 
@@ -27,6 +26,13 @@ namespace GameElements
 
         [Tooltip("Color of the ring when the timer runs out (at zero time left)")]
         public Color ringExpiredColor = Color.red;
+        
+        [Header("Score Fine")]
+        [SerializeField]
+        private int fineAmount = 50;
+        
+        [SerializeField]
+        private ScoreEventObject _scoreEventObject;
 
         private float spawnTime;
         private bool isComplete;
@@ -76,30 +82,25 @@ namespace GameElements
                 return;
 
             var elapsedTime = Time.time - spawnTime;
-
-            // Calculate fraction of time left (clamp to 0 so we don't get negative angles)
             var timeLeft = Mathf.Max(TimeLimit - elapsedTime, 0f);
-            var fraction = timeLeft / TimeLimit; // goes from 1 (start) down to 0 (end)
+            var fraction = timeLeft / TimeLimit;
 
-            // Update the ring arc: from full circle down to 0
             timerRing.AngRadiansEnd = ShapesMath.TAU * fraction;
 
-            // Smooth color transition: when fraction=1 => ringColor, fraction=0 => ringExpiredColor
             timerRing.Color = Color.Lerp(ringExpiredColor, ringColor, fraction);
 
-            // Once time is fully up, color is already at red, 
-            // but if you wish to do anything else specifically at time 0, do so here:
             if (timeLeft <= 0f)
             {
-                // Optionally set color to ensure it's fully red
                 timerRing.Color = ringExpiredColor;
             }
 
-            // If time is up and there are still unconnected counterparts, handle failure
             if (elapsedTime > TimeLimit && RequiredCounterparts.Count > 0)
             {
                 Debug.LogWarning($"{gameObject.name} failed to connect with {RequiredCounterparts.Count} required counterpart(s) within {TimeLimit} seconds.");
-                GameManager.Instance.ChangeState(GameState.GameOver);
+                
+                spawnTime = Time.time;
+                _scoreEventObject.RaiseEvent(new ScoreEvent(-fineAmount, transform.position));
+                ScoreManager.Instance.AddFine(fineAmount);
             }
         }
     }

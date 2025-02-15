@@ -11,7 +11,9 @@ namespace GameElements.Nodes
 
         public void HighlightConnections(HighlightType highlightType)
         {
-            foreach (var connection in Connections)
+            if (Connections == null) return;
+
+            foreach (var connection in Connections.Keys)
             {
                 connection.Highlight(highlightType);
             }

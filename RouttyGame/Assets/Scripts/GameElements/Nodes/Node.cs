@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,7 +7,7 @@ namespace GameElements.Nodes
 {
     public abstract class Node : MonoBehaviour
     {
-        public List<Connection> Connections = new();
+        public Dictionary<Connection, ConnectionPoint> Connections;
         
         public abstract NodeType NodeType { get; }
 
@@ -27,7 +28,21 @@ namespace GameElements.Nodes
         
         public virtual void Connect(Connection connection)
         {
-            Connections.Add(connection);
+            Connections ??= new Dictionary<Connection, ConnectionPoint>();
+
+            var connectionPoint = connection.GetConnectionPoint(this);
+            Connections.Add(connection, connectionPoint);
+        }
+
+        private void Update()
+        {
+            if (Connections == null)
+                return;
+
+            foreach (var (connection, point) in Connections)
+            {
+                connection.UpdateConnectionPointPosition(point, transform.position);
+            }
         }
     }
     
@@ -36,6 +51,7 @@ namespace GameElements.Nodes
         Source,
         Color,
         Shape,
-        Destination
+        Destination,
+        Routty
     }
 }

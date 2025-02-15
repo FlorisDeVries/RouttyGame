@@ -32,8 +32,7 @@ namespace UserInterface.Generation
             // Create and add the subscript.
             var subscript = mainMenu.Create<Label>("subscript");
             subscript.text = "Click anywhere to start the game";
-            if (_fontAsset != null)
-                subscript.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
+            if (_fontAsset) subscript.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
         }
     }
 }

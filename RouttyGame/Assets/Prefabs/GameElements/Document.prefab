@@ -191,5 +191,5 @@ MonoBehaviour:
   moveSpeed: 5
   spawnAnimationDuration: 0.3
   despawnAnimationDuration: 0.3
-  bounceScale: 1.2
+  _scoreEventObject: {fileID: 11400000, guid: 3ea72c818dd411a42a47c529dde5a147, type: 2}
   StampSpriteRenderer: {fileID: 5259527017478689465}

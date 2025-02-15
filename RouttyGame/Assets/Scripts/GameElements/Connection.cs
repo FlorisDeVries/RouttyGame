@@ -68,6 +68,24 @@ namespace GameElements
             Highlight(HighlightType.Disabled);
             StartDocumentTransport();
         }
+        
+        public ConnectionPoint GetConnectionPoint(Node node)
+        {
+            return _connectionPoints.Find(cp => cp.Node == node);
+        }
+        
+        public void UpdateConnectionPointPosition(ConnectionPoint connectionPoint, Vector3 position)
+        {
+            connectionPoint.Position = position.FlattenOnZ();
+            
+            
+            
+            // Update line renderer positions.
+            for (var i = 0; i < _connectionPoints.Count; i++)
+            {
+                _lineRenderer.SetPosition(i, _connectionPoints[i].Position);
+            }
+        }
 
         public void FollowMouse(Vector3 mousePosition)
         {

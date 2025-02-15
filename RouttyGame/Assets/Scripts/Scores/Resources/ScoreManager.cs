@@ -76,5 +76,10 @@ namespace Scores.Resources
         {
             OnShowLeaderBoardsEvent.Invoke(show);
         }
+
+        public void AddFine(int amount)
+        {
+            AddScore(-amount);
+        }
     }
 }

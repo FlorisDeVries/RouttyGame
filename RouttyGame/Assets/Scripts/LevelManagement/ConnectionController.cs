@@ -18,7 +18,7 @@ namespace LevelManagement
         private LevelController _levelController;
         
         private readonly List<Node> _selectedNodes = new();
-        private SourceNode _sourceNode = new();
+        private SourceNode _sourceNode;
         private bool _isDrawing;
 
         private MouseData _mouseData;

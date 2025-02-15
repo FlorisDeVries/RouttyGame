@@ -276,7 +276,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6be7d8ddd514f75862e6a28ec03ace1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Connections: []
   DocumentsPerMinute: 10
 --- !u!114 &8997459351833337761
 MonoBehaviour:
@@ -296,3 +295,5 @@ MonoBehaviour:
   timerRing: {fileID: 7672566204565783861}
   ringColor: {r: 0, g: 1, b: 0, a: 1}
   ringExpiredColor: {r: 1, g: 0, b: 0, a: 1}
+  fineAmount: 50
+  _scoreEventObject: {fileID: 11400000, guid: 3ea72c818dd411a42a47c529dde5a147, type: 2}

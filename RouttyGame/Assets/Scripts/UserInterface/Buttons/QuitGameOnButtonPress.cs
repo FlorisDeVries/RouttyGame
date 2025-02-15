@@ -1,4 +1,5 @@
-﻿using GameManagement.Resources;
+﻿using _Common.Events;
+using GameManagement.Resources;
 using UnityEngine.UIElements;
 
 namespace UserInterface.Buttons

@@ -11,6 +11,7 @@ namespace LevelManagement
             var cumulativeTime = 0f;
             var spawnOffset = 0.5f; // time between spawns in a connection
             var connectionGap = 1f; // gap between connections
+            var winOffset = 25f; // time between last node and win command
 
             // Wave 1: Red & Circle
             cumulativeTime += spawnOffset;
@@ -57,6 +58,10 @@ namespace LevelManagement
             // Wave 4: An additional source
             cumulativeTime += spawnOffset;
             commands.Add(new TimedSpawnCommand { SpawnTime = cumulativeTime, SpawnType = SpawnType.Source });
+            
+            // Win command
+            cumulativeTime += winOffset;
+            commands.Add(new TimedSpawnCommand { SpawnTime = cumulativeTime, SpawnType = SpawnType.Win });
             
             return commands;
         }

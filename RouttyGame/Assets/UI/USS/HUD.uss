@@ -1,30 +1,96 @@
-/* Root container for the entire HUD */
 .root {
     position: absolute;
     width: 100%;
     height: 100%;
-    pointer-events: none;
 }
 
-/* Main HUD container */
+/* Header container */
+.header-container {
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+/* General header style */
+.header, .header-large {
+    font-size: 24px;
+    color: white;
+    -unity-text-align: middle-center;
+}
+
+.header {
+    width: 20%;
+}
+
+.header-large {
+    width: 25%;
+}
+
+.vertical-line {
+    width: 2px;
+    background-color: rgba(255, 255, 255, 0.3);
+    align-self: stretch;
+}
+
 .hud {
     position: absolute;
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: flex-end; /* Aligns to the right */
-    align-items: flex-start; /* Aligns to the top */
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
     padding: 20px;
 }
 
-/* Score label styling */
 .score-label {
-    font-size: 48px;
-    font-weight: bold;
+    font-size: 42px;
     color: white;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-    background-color: rgba(0, 0, 0, 0.4);
     padding: 10px 20px;
     border-radius: 10px;
-    border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+.pause-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.pause-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.pause-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.buy-button {
+    padding: 15px;
+    font-size: 20px;
+    color: white;
+    background-color: rgb(0, 182, 218);
+    border: 4px;
+    border-color: rgb(0, 182, 218);
+    border-radius: 4px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.buy-button:hover {
+    background-color: #00A0C2;
 }

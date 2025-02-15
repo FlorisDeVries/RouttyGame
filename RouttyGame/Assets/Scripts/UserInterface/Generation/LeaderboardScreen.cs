@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using _Common.Events.Resources;
 using _Common.Extensions;
 using Scores.Resources;
 using Unity.Services.Core;
@@ -37,10 +38,6 @@ namespace UserInterface.Generation
 
             // Title
             var title = panel.Create<Label>("title-label");
-            if (_fontAsset != null)
-            {
-                title.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
-            }
             title.text = _title;
 
             // Leaderboard Table
@@ -51,24 +48,12 @@ namespace UserInterface.Generation
 
             var rankHeader = headerRow.Create<Label>("rank-label");
             rankHeader.text = "Rank";
-            if (_fontAsset != null)
-            {
-                rankHeader.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
-            }
-
+            
             var nameHeader = headerRow.Create<Label>("name-label");
             nameHeader.text = "Player";
-            if (_fontAsset != null)
-            {
-                nameHeader.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
-            }
 
             var scoreHeader = headerRow.Create<Label>("score-label");
             scoreHeader.text = "Score";
-            if (_fontAsset != null)
-            {
-                scoreHeader.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
-            }
 
             var entries = ScoreManager.Instance.LeaderboardEntries;
             if (entries.Count == 0)
@@ -95,7 +80,15 @@ namespace UserInterface.Generation
             returnButton.text = _returnButton.Text;
             void Return(ClickEvent evt) => _returnButton.EventObject.RaiseEvent(evt);
             returnButton.RegisterCallback<ClickEvent>(Return);
-            createdButtons.Add(returnButton, Return); 
+            createdButtons.Add(returnButton, Return);
+
+            if (!_fontAsset)
+                return;
+            
+            title.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
+            rankHeader.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
+            nameHeader.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
+            scoreHeader.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
         }
 
         public override void Show()

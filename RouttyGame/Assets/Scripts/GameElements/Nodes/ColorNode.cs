@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameElements.Nodes
@@ -24,6 +25,12 @@ namespace GameElements.Nodes
         {
             Color = color;
             _spriteRenderer.color = NodeCollection.Instance.ColorToColorDictionary[Color];
+        }
+        
+        public override bool CanConnect(List<Node> currentPath, Node previousNode)
+        {
+            var routtyFound = currentPath.Exists(node => node.NodeType == NodeType.Routty);
+            return !routtyFound && base.CanConnect(currentPath, previousNode);
         }
     }
 

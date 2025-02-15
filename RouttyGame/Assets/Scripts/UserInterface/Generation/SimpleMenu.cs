@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using _Common.Events.Resources;
 using _Common.Extensions;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -20,20 +21,13 @@ namespace UserInterface.Generation
         [SerializeField]
         private List<ButtonProperties> _menuButtons = new();
         
-        private Dictionary<Button, EventCallback<ClickEvent>> _createdButtons = new();
-
         protected override void Generate()
         {
             // Create elements
-            ResetEvents();
-
             var rootContainer = root.Create("root", false);
             var menuContainer = rootContainer.Create("menu-container");
             var title = menuContainer.Create<Label>("title-label");
-            if (_fontAsset != null)
-            {
-                title.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
-            }
+            if (_fontAsset) title.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
             title.text = _title;
             
             foreach (var buttonType in _menuButtons)
@@ -47,30 +41,12 @@ namespace UserInterface.Generation
             var button = container.Create<Button>("button");
 
             button.text = buttonProperties.Text;
-            if (_fontAsset != null)
-            {
-                button.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
-            }
+            if (_fontAsset) button.style.unityFontDefinition = new StyleFontDefinition(_fontAsset);
 
             void EventCallBack(ClickEvent evt) => buttonProperties.EventObject.RaiseEvent(evt);
             button.RegisterCallback<ClickEvent>(EventCallBack);
 
-            _createdButtons.Add(button, EventCallBack);
-        }
-
-        private void OnDisable()
-        {
-            ResetEvents();
-        }
-
-        private void ResetEvents()
-        {
-            foreach (var (button, eventCallback) in _createdButtons)
-            {
-                button.UnregisterCallback(eventCallback);
-            }
-
-            _createdButtons.Clear();
+            createdButtons.Add(button, EventCallBack);
         }
     }
 }

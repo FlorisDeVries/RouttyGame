@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace GameElements.Nodes
 {
@@ -23,6 +24,12 @@ namespace GameElements.Nodes
         {
             Shape = shape;
             _spriteRenderer.sprite = NodeCollection.Instance.ShapeToSpriteDictionary[Shape];
+        }
+
+        public override bool CanConnect(List<Node> currentPath, Node previousNode)
+        {
+            var routtyFound = currentPath.Exists(node => node.NodeType == NodeType.Routty);
+            return !routtyFound && base.CanConnect(currentPath, previousNode);
         }
     }
     
