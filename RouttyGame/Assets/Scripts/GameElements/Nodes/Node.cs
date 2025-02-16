@@ -11,7 +11,7 @@ namespace GameElements.Nodes
         
         public abstract NodeType NodeType { get; }
 
-        public virtual bool CanConnect(List<Node> currentPath, Node previousNode)
+        public virtual bool CanConnect(List<Node> currentPath, Node startNode)
         {
             return currentPath.All(node => node.NodeType != NodeType);
         }
@@ -32,6 +32,16 @@ namespace GameElements.Nodes
 
             var connectionPoint = connection.GetConnectionPoint(this);
             Connections.Add(connection, connectionPoint);
+        }
+        
+        public void HighlightConnections(HighlightType highlightType)
+        {
+            if (Connections == null) return;
+
+            foreach (var connection in Connections.Keys)
+            {
+                connection.Highlight(highlightType);
+            }
         }
 
         private void Update()

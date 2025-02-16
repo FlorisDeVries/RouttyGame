@@ -26,10 +26,10 @@ namespace GameElements.Nodes
             _spriteRenderer.sprite = NodeCollection.Instance.ShapeToSpriteDictionary[Shape];
         }
 
-        public override bool CanConnect(List<Node> currentPath, Node previousNode)
+        public override bool CanConnect(List<Node> currentPath, Node startNode)
         {
             var routtyFound = currentPath.Exists(node => node.NodeType == NodeType.Routty);
-            return !routtyFound && base.CanConnect(currentPath, previousNode);
+            return !routtyFound && base.CanConnect(currentPath, startNode);
         }
     }
     

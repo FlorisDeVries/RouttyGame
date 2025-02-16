@@ -25,5 +25,16 @@ namespace _Common.Extensions
             var j = Array.IndexOf<T>(arr, src) + 1;
             return (arr.Length==j) ? arr[0] : arr[j];            
         }
+        
+        // Shuffle the list in place using the Fisher-Yates algorithm.
+        public static void Shuffle<T>(this IList<T> list)
+        {
+            var n = list.Count;
+            for (var i = 0; i < n - 1; i++)
+            {
+                var r = UnityEngine.Random.Range(i, n);
+                (list[r], list[i]) = (list[i], list[r]);
+            }
+        }
     }
 }

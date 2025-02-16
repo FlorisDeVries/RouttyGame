@@ -53,13 +53,15 @@ namespace GameElements
             _lineRenderer.positionCount++;
             _lineRenderer.SetPosition(_lineRenderer.positionCount - 1, _mousePosition.FlattenOnZ());
         }
-
-        public void FinishConnection(List<Node> path, int documentsPerMinute)
+        
+        public void FinishConnection(List<Node> path, int documentsPerMinute, bool reverse = false)
         {  
             DocumentsPerMinute = documentsPerMinute;
             
             _lineRenderer.positionCount--;
             _connectionPoints.Clear();
+            
+            if (reverse) path.Reverse();
             foreach (var node in path)
             {
                 _connectionPoints.Add(new ConnectionPoint(node.transform.position.FlattenOnZ(), node));

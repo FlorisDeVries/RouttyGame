@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using _Common.Events.Resources;
 using DG.Tweening;
-using GameManagement;
-using GameManagement.Resources;
 using Scores.Resources;
 using Shapes;
 using Sirenix.OdinInspector;

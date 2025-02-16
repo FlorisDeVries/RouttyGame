@@ -17,7 +17,7 @@ namespace LevelManagement
         private LevelController _levelController;
         
         private readonly List<Node> _selectedNodes = new();
-        private SourceNode _sourceNode;
+        private Node _startNode;
         private bool _isDrawing;
 
         private MouseData _mouseData;
@@ -54,7 +54,6 @@ namespace LevelManagement
         private void Update()
         {
             if (!_isDrawing) return;
-
             if (!_currentConnection) return;
             
             _currentConnection.FollowMouse(_mouseData.WorldPosition);
@@ -74,7 +73,7 @@ namespace LevelManagement
                 return;
             }
             
-            if (!hitNode.CanConnect(_selectedNodes, _selectedNodes[^1]))
+            if (!hitNode.CanConnect(_selectedNodes, _startNode))
             {
                 return;
             }
@@ -95,19 +94,28 @@ namespace LevelManagement
                 return;
             }
             
-            _sourceNode = node as SourceNode;
-            if (!_sourceNode)
-            {
-                return;
-            }
+            
+            // Allow starting from either a Source or Destination.
+            if (node is not (SourceNode or DestinationNode)) return;
             
             _isDrawing = true;
             _selectedNodes.Clear();
             _selectedNodes.Add(node);
-            _sourceNode.HighlightConnections(HighlightType.Secondary);
-            _levelController.HighlightMissingDestinations(_sourceNode);
-            
-            // Spawn a line renderer
+            _startNode = node;
+                
+            _startNode.HighlightConnections(HighlightType.Secondary);
+                
+            switch (_startNode)
+            {
+                case SourceNode sourceNode:
+                    _levelController.HighlightMissingDestinations(sourceNode);
+                    break;
+                case DestinationNode destinationNode:
+                    _levelController.HighlightMissingSources(destinationNode);
+                    break;
+            }
+                
+            // Spawn the connection line.
             _currentConnection = Instantiate(ConnectionPrefab, transform);
             _currentConnection.StartConnection(node.transform.position);
         }
@@ -118,15 +126,14 @@ namespace LevelManagement
                 return;
             
             _isDrawing = false;
-            _sourceNode.HighlightConnections(HighlightType.Disabled);
-            _levelController.DisableAllDestinationHighlights();
+            _startNode.HighlightConnections(HighlightType.Disabled);
+            _levelController.DisableAllNodeHighlights();
             
             if (_selectedNodes.Count > 1)
             {
                 var endNode = _selectedNodes[^1];
-                if (endNode.NodeType == NodeType.Destination)
+                if (_startNode is SourceNode sourceNode && endNode.NodeType == NodeType.Destination)
                 {
-                    var sourceNode = _selectedNodes[0] as SourceNode;
                     var destinationNode = endNode as DestinationNode;
                     var rate = destinationNode!.DocumentsPerMinute * sourceNode!.DocumentsPerMinute;
 
@@ -139,6 +146,23 @@ namespace LevelManagement
                     
                     _selectedNodes.Clear();
                     _currentConnection = null;
+                    _levelController.RegisterConnection(sourceNode, destinationNode);
+                }
+                else if (_startNode is DestinationNode destinationNode && endNode.NodeType == NodeType.Source)
+                {
+                    sourceNode = endNode as SourceNode;
+                    var rate = destinationNode!.DocumentsPerMinute * sourceNode!.DocumentsPerMinute;
+
+                    _currentConnection.FinishConnection(_selectedNodes, rate, true);
+
+                    foreach (var selectedNode in _selectedNodes)
+                    {
+                        selectedNode.Connect(_currentConnection);
+                    }
+                    
+                    _selectedNodes.Clear();
+                    _currentConnection = null;
+                    // Note: We always register with source first and destination second.
                     _levelController.RegisterConnection(sourceNode, destinationNode);
                 }
                 else

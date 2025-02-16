@@ -40,7 +40,7 @@ namespace GameElements.Nodes
             return true;
         }
 
-        public override bool CanConnect(List<Node> currentPath, Node previousNode)
+        public override bool CanConnect(List<Node> currentPath, Node startNode)
         {
             return true;
         }

@@ -104,7 +104,7 @@ namespace LevelManagement
                     break;
                 case SpawnType.Destination:
                     var destinationNode = Instantiate(DestinationPrefab, spawnPos, Quaternion.identity, transform);
-                    destinationNode.Setup(command.Shape, command.Color);
+                    destinationNode.Setup(command.Shape, command.Color, command.WaveIndex);
                     _activeDestinations.Add(destinationNode);
                     var destTimer = destinationNode.gameObject.GetComponent<ConnectionRequirementTimer>();
                     destTimer.Setup(new List<UnityEngine.Object>(_activeSources), 5 + (.7f * command.WaveIndex));
@@ -180,12 +180,27 @@ namespace LevelManagement
                 destination.Highlight(true);
             }
         }
+        
+        public void HighlightMissingSources(DestinationNode node)
+        {
+            var sources = _activeSources
+                .Where(source => !source.ConnectedToNode(node)).ToList();
+            foreach (var source in sources)
+            {
+                source.Highlight(true);
+            }
+        }
 
-        public void DisableAllDestinationHighlights()
+        public void DisableAllNodeHighlights()
         {
             foreach (var destination in _activeDestinations)
             {
                 destination.Highlight(false);
+            }
+            
+            foreach (var source in _activeSources)
+            {
+                source.Highlight(false);
             }
         }
 

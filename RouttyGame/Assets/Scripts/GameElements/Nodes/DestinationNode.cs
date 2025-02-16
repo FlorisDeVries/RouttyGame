@@ -17,6 +17,10 @@ namespace GameElements.Nodes
         
         [SerializeField]
         private SpriteRenderer _highlight;
+        
+        [SerializeField]
+        private Color _highlightColor;
+        private Color _defaultColor;
 
         [Tooltip("Documents per minute that this destination can receive")]
         public int DocumentsPerMinute = 15;
@@ -26,11 +30,15 @@ namespace GameElements.Nodes
         private void OnEnable()
         {
             _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            
+            _defaultColor = _highlight.color;
             Highlight(false);
         }
 
-        public void Setup(NodeShape shape, NodeColor color)
+        public void Setup(NodeShape shape, NodeColor color, int waveIndex)
         {
+            DocumentsPerMinute = 10 + waveIndex * 2;
+                
             Shape = shape;
             Color = color;
 
@@ -40,26 +48,16 @@ namespace GameElements.Nodes
             _highlight.sprite = _spriteRenderer.sprite;
         }
 
-        public void HighlightConnections(HighlightType highlightType)
-        {
-            if (Connections == null) return;
-
-            foreach (var connection in Connections.Keys)
-            {
-                connection.Highlight(highlightType);
-            }
-        }
-
-        public override bool CanConnect(List<Node> currentPath, Node previousNode)
+        public override bool CanConnect(List<Node> currentPath, Node startNode)
         {
             var anyColorMatch = currentPath.Exists(node => node.MatchColor(Color));
             var anyShapeMatch = currentPath.Exists(node => node.MatchShape(Shape));
-            return anyColorMatch && anyShapeMatch && base.CanConnect(currentPath, previousNode);
+            return anyColorMatch && anyShapeMatch && base.CanConnect(currentPath, startNode);
         }
         
         public void Highlight(bool highlight)
         {
-            _highlight.enabled = highlight;
+            _highlight.color = highlight ? _highlightColor : _defaultColor;
         }
     }
 }

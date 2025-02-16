@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameElements.Nodes
@@ -11,25 +12,30 @@ namespace GameElements.Nodes
         
         [SerializeField]
         private SpriteRenderer _highlight;
+        
+        [SerializeField]
+        private Color _highlightColor;
+        private Color _defaultColor;
+
+        public override bool CanConnect(List<Node> currentPath, Node startNode)
+        {
+            var destinationNode = startNode as DestinationNode;
+            if (!destinationNode) return false;
+            
+            var anyColorMatch = currentPath.Exists(node => node.MatchColor(destinationNode.Color));
+            var anyShapeMatch = currentPath.Exists(node => node.MatchShape(destinationNode.Shape));
+            return anyColorMatch && anyShapeMatch && base.CanConnect(currentPath, startNode);
+        }
 
         private void OnEnable()
         {
+            _defaultColor = _highlight.color;
             Highlight(false);
-        }
-
-        public void HighlightConnections(HighlightType highlightType)
-        {
-            if (Connections == null) return;
-
-            foreach (var connection in Connections.Keys)
-            {
-                connection.Highlight(highlightType);
-            }
         }
         
         public void Highlight(bool highlight)
         {
-            _highlight.enabled = highlight;
+            _highlight.color = highlight ? _highlightColor : _defaultColor;
         }
     }
 }

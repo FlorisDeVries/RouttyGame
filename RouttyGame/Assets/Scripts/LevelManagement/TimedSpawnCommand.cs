@@ -34,6 +34,6 @@ namespace LevelManagement
         [ShowIf(nameof(ShouldShowShape))]
         public NodeShape Shape;
 
-        public float WaveIndex;
+        public int WaveIndex;
     }
 }
