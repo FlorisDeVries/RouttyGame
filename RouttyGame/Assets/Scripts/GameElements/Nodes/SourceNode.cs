@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameElements.Nodes
@@ -22,9 +21,10 @@ namespace GameElements.Nodes
             var destinationNode = startNode as DestinationNode;
             if (!destinationNode) return false;
             
+            var alreadyConnected = startNode.ConnectedToNode(this);
             var anyColorMatch = currentPath.Exists(node => node.MatchColor(destinationNode.Color));
             var anyShapeMatch = currentPath.Exists(node => node.MatchShape(destinationNode.Shape));
-            return anyColorMatch && anyShapeMatch && base.CanConnect(currentPath, startNode);
+            return !alreadyConnected && anyColorMatch && anyShapeMatch && base.CanConnect(currentPath, startNode);
         }
 
         private void OnEnable()

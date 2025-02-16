@@ -50,9 +50,10 @@ namespace GameElements.Nodes
 
         public override bool CanConnect(List<Node> currentPath, Node startNode)
         {
+            var alreadyConnected = startNode.ConnectedToNode(this);
             var anyColorMatch = currentPath.Exists(node => node.MatchColor(Color));
             var anyShapeMatch = currentPath.Exists(node => node.MatchShape(Shape));
-            return anyColorMatch && anyShapeMatch && base.CanConnect(currentPath, startNode);
+            return !alreadyConnected && anyColorMatch && anyShapeMatch && base.CanConnect(currentPath, startNode);
         }
         
         public void Highlight(bool highlight)
