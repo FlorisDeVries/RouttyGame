@@ -6,6 +6,7 @@ using _Common.Events;
 using DG.Tweening;
 using GameElements;
 using GameElements.Nodes;
+using GameElements.Resources;
 using GameManagement;
 using GameManagement.Resources;
 using Scores.Resources;
@@ -54,6 +55,10 @@ namespace LevelManagement
 
             RouttyIsPurchased = false;
             var spawnCommands = SpawnSequence.GetSpawnCommands();
+            
+            ChannelCollection.Instance.ShuffleChannels();
+            ChannelCollection.Instance.ShuffleErps();
+            
             StartCoroutine(SpawnCommandsCoroutine(spawnCommands));
         }
 
@@ -84,6 +89,7 @@ namespace LevelManagement
             {
                 case SpawnType.Source:
                     var source = Instantiate(SourcePrefab, spawnPos, Quaternion.identity, transform);
+                    source.Setup(_activeSources.Count);
                     _activeSources.Add(source);
                     var sourceTimer = source.gameObject.GetComponent<ConnectionRequirementTimer>();
                     sourceTimer.Setup(new List<UnityEngine.Object>(_activeDestinations), 5 + (.7f * command.WaveIndex));

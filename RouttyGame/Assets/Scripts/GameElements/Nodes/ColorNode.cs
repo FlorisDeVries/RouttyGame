@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameElements.Resources;
 using UnityEngine;
 
 namespace GameElements.Nodes

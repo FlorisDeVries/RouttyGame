@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameElements.Resources;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -26,6 +27,22 @@ namespace GameElements.Nodes
         public int DocumentsPerMinute = 15;
 
         private SpriteRenderer _spriteRenderer;
+        
+        [SerializeField]
+        private SpriteRenderer _iconRenderer;
+        [SerializeField]
+        private SpriteRenderer _iconBackgroundRenderer;
+        
+        [SerializeField]
+        private SpriteRenderer _triangleIconRenderer;
+        [SerializeField]
+        private SpriteRenderer _triangleBackgroundRenderer;
+
+        [SerializeField]
+        private SpriteRenderer _starIconRenderer;
+        [SerializeField]
+        private SpriteRenderer _starBackgroundRenderer;
+        private Sprite _iconSprite;
 
         private void OnEnable()
         {
@@ -38,6 +55,44 @@ namespace GameElements.Nodes
         public void Setup(NodeShape shape, NodeColor color, int waveIndex)
         {
             DocumentsPerMinute = 10 + waveIndex * 2;
+            
+            _iconSprite = ChannelCollection.Instance.ChannelSprites[waveIndex];
+            if (shape == NodeShape.Triangle)
+            {
+                _triangleBackgroundRenderer.enabled = true;
+                _triangleIconRenderer.enabled = true;
+                _triangleIconRenderer.sprite = _iconSprite;
+                
+                _iconRenderer.enabled = false;
+                _iconBackgroundRenderer.enabled = false;
+                
+                _starBackgroundRenderer.enabled = false;
+                _starIconRenderer.enabled = false;
+            }
+            else if (shape == NodeShape.Star)
+            {
+                _starBackgroundRenderer.enabled = true;
+                _starIconRenderer.enabled = true;
+                _starIconRenderer.sprite = _iconSprite;
+                
+                _iconRenderer.enabled = false;
+                _iconBackgroundRenderer.enabled = false;
+                
+                _triangleBackgroundRenderer.enabled = false;
+                _triangleIconRenderer.enabled = false;
+            }
+            else
+            {
+                _iconBackgroundRenderer.enabled = true;
+                _iconRenderer.enabled = true;
+                _iconRenderer.sprite = _iconSprite;
+                
+                _triangleBackgroundRenderer.enabled = false;
+                _triangleIconRenderer.enabled = false;
+                
+                _starBackgroundRenderer.enabled = false;
+                _starIconRenderer.enabled = false;
+            }
                 
             Shape = shape;
             Color = color;

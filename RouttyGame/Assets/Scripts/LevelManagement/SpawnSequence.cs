@@ -88,6 +88,11 @@ namespace LevelManagement
                 });
 
                 cumulativeTime += connectTime;
+
+                if (wave > 13)
+                {
+                    cumulativeTime -= connectTime / 5f;
+                }
             }
 
             cumulativeTime += 30f;

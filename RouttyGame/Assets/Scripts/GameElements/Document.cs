@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _Common.Events.Resources;
 using DG.Tweening;
 using GameElements.Nodes;
+using GameElements.Resources;
 using GameManagement;
 using GameManagement.Resources;
 using Scores.Resources;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GameElements.Resources;
 using UnityEngine;
 
 namespace GameElements.Nodes
@@ -15,6 +16,16 @@ namespace GameElements.Nodes
         [SerializeField]
         private Color _highlightColor;
         private Color _defaultColor;
+
+        [SerializeField]
+        private SpriteRenderer _iconRenderer;
+        private Sprite _iconSprite;
+
+        public void Setup(int waveIndex)
+        {
+            _iconSprite = ChannelCollection.Instance.ErpSprites[waveIndex];
+            _iconRenderer.sprite = _iconSprite;
+        }
 
         public override bool CanConnect(List<Node> currentPath, Node startNode)
         {
